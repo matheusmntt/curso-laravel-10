@@ -6,34 +6,39 @@
   </div>
 
   <div>
-    <form action="">
+    <form action="{{ route('produto.index') }}">
       <input type="text" name="search" placeholder="Digite o nome" />
       <button>Pesquisar</button>
       <a type="button" href="" class="btn btn-success btn-sm float-end">Incluir produto</a>
     </form>
 
     <div class="table-responsive small mt-5">
-      <table class="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($findProducts as $product)
+      @if ($findProducts->isEmpty())
+          <p>Não existem dados</p>  
+      @else
+       <table class="table table-striped table-sm">
+          <thead>
             <tr>
-              <td>{{ $product->name }}</td>
-              <td>{{ 'R$' . ' ' . number_format($product->value, 2, ',', '.') }}</td>
-              <td>
-                <a href="#" class="btn btn-primary btn-sm">Editar</a>
-                <a href="#" class="btn btn-danger btn-sm">Excluir</a>
-              </td>
-            </tr> 
-          @endforeach
-        </tbody>
-      </table> 
+              <th scope="col">Nome</th>
+              <th scope="col">Valor</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($findProducts as $product)
+              <tr>
+                <td>{{ $product->name }}</td>
+                <td>{{ 'R$' . ' ' . number_format($product->value, 2, ',', '.') }}</td>
+                <td>
+                  <a href="#" class="btn btn-primary btn-sm">Editar</a>
+                  <meta name='csrf-token' content="{{ csrf_token() }}" />
+                  <a onclick="deleteRegisterPagination( '{{ route('product.delete') }}', {{ $product->id }} )" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+              </tr> 
+            @endforeach
+          </tbody>
+        </table> 
+      @endif
     </div> 
   </div>
 
